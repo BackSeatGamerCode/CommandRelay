@@ -18,6 +18,10 @@ TOOLBAR_STRUCTURE = [
 ]
 
 
+def format_string(message: str) -> str:
+    return message.lower().replace(" ", "")
+
+
 class BaseMode(abc.ABC):
     def __init__(self, config: dict, start: bool = True):
         self._config = config
@@ -80,8 +84,10 @@ class BaseMode(abc.ABC):
                 self.alert_box(constants.ABOUT_TEXT)
 
     def receive_reward(self, command: str, guest_name: str):
+        command = format_string(command)
+
         for reward in self.rewards:
-            if reward["name"] == command:
+            if format_string(reward["name"]) == command:
                 self.write_to_console("{} redeemed command {}".format(guest_name, command))
                 sdk.send_command(
                     self._config["server"], self._config["auth_code"], reward["id"], guest_name
