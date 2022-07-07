@@ -1,1 +1,0 @@
-{"main": {"auth_code": "380faeb786ec6", "mode": "Twitch IRC", "server": "https://backseatgamer.pythonanywhere.com/"}, "twitch_irc": {"token": "oauth:fvpo4d4tbgdjqidpmyvk97r6fp74q8", "channel": "CPSuperstore", "nickname": "BSGCommandRelayBot", "server": "irc.chat.twitch.tv", "port": 6667}}
