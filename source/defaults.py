@@ -14,7 +14,7 @@ DEFAULT_DATA = dict(
 )
 
 WINDOW_SETTINGS = {
-    "title": "BackSeatGamer Reverse Proxy",
+    "title": "BackSeatGamer Command Relay",
     "finalize": True,
     "icon": "assets/logo.ico" if os.name == 'nt' else "assets/logo.png"
 }
