@@ -118,6 +118,9 @@ class BaseMode(abc.ABC):
     def get_additional_settings(self, name: str, settings: typing.List[setting.Setting]):
         self.additional_settings = additional_settings_screen.show(name, settings)
 
+    def get_user_info(self, username: str) -> dict:
+        return sdk.get_guest_info(self._config["server"], self._config["auth_code"], username)
+
     def reload_rewards(self):
         self.rewards = sdk.get_rewards(self._config["server"], self._config["auth_code"])
 

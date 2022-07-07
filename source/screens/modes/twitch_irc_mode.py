@@ -1,9 +1,8 @@
-import time
 import TwitchPyRC
 
+import source.exceptions as exceptions
 import source.screens.modes.base_mode as base_mode
 import source.setting as setting
-import source.exceptions as exceptions
 
 
 class TwitchIRCMode(base_mode.BaseMode):
@@ -19,7 +18,7 @@ class TwitchIRCMode(base_mode.BaseMode):
             self.bot.send_message(", ".join("!{}".format(c["name"]) for c in self.rewards))
 
         if message in ("!balance", "!bal", "!ball", "!points"):
-            self.bot.send_message("{} has {} points".format(username, 5))
+            self.bot.send_message("{} has {} points".format(username, self.get_user_info(username)["points"]))
 
         if message.startswith("!"):
             try:

@@ -12,6 +12,14 @@ def get_rewards(url_base: str, auth_code: str) -> list:
     return r.json()["rewards"]
 
 
+def get_guest_info(url_base: str, auth_code: str, guest_name: str) -> dict:
+    r = requests.get(
+        url_base + "guest/" + auth_code + "/rewards/poll",
+        params=dict(guest=guest_name), headers=dict(token=auth_code)
+    )
+    return r.json()["user"]
+
+
 def send_command(url_base: str, auth_code: str, command_id: str, guest_name: str):
     r = requests.post(
         url_base + "guest/" + auth_code + "/rewards/poll",
