@@ -4,11 +4,12 @@ import PySimpleGUI as sg
 import source.defaults as defaults
 import source.exceptions as exceptions
 import source.update_checker as update_checker
+import source.screens.modes as mode_screens
 
 sg.change_look_and_feel('Dark2')
 
 MODES = {
-
+    "Twitch IRC": mode_screens.TwitchIRCMode
 }
 
 CHECKED_FOR_UPDATES = False
@@ -21,10 +22,8 @@ def create_window():
         [sg.Text("BackSeatGamer Command Relay")],
         [sg.Text("Auth Code"), sg.Input(default_text=defs.get("auth_code", ""), key="auth_code")],
         [sg.Text("Mode"), sg.Combo(list(MODES.keys()), readonly=True, default_value=defs.get("mode", ""), key="mode")],
-        [sg.Text("Port"), sg.Input(default_text=defs.get("port", ""), key="port")],
         [sg.Text("Advanced Settings")],
         [sg.Text("Server"), sg.Input(default_text=defs.get("server", ""), key="server")],
-        [sg.Text("Frequency"), sg.Input(default_text=defs.get("frequency", ""), key="frequency")],
         [sg.Button("Start")]
     ]
 
@@ -65,10 +64,7 @@ def show():
             config = {
                 "auth_code": window["auth_code"].get(),
                 "mode": window["mode"].get(),
-                "port": window["port"].get(),
-                "server": window["server"].get(),
-                "frequency": window["frequency"].get(),
-                "format": window["format"].get()
+                "server": window["server"].get()
             }
 
             if any(i.strip() == "" for i in config.values()):
@@ -77,21 +73,6 @@ def show():
 
             if not config["server"].endswith("/"):
                 config["server"] += "/"
-
-            if config["port"].isdigit():
-                config["port"] = int(config["port"])
-            else:
-                sg.Popup("Port must be an integer", **defaults.RAW_WINDOW_SETTINGS)
-                continue
-
-            if config["frequency"].isdigit():
-                config["frequency"] = int(config["frequency"])
-            else:
-                sg.Popup("Frequency must be an integer", **defaults.RAW_WINDOW_SETTINGS)
-                continue
-
-            if config["frequency"] < 2:
-                config["frequency"] = 2
 
             defaults.set_defaults("main", config)
 
