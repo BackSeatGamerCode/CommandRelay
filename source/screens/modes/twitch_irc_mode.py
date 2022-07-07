@@ -13,10 +13,14 @@ class TwitchIRCMode(base_mode.BaseMode):
             setting.Setting("Server", "server", default="irc.chat.twitch.tv"),
             setting.Setting("Port", "port", cast=int, default=6667),
         ])
-
+        # self.receive_reward("Up", "cpsuperstore")
+        # self.receive_reward("Up", "cpsuperstore")
+        print(self.additional_settings)
 
     def _relay_commands(self):
-        print(self.additional_settings)
         while self._running:
             print("RELAY")
             time.sleep(3)
+
+    def teardown(self):
+        print('bye')

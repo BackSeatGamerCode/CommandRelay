@@ -25,20 +25,16 @@ class BaseMode(abc.ABC):
         self._show_error = False
         self._running = True
 
+        self._rewards = []
+        self._commands = {}
+        self._layout = []
+        self._reward_buttons = []
+
         self.rewards = []
         self.reload_rewards()
 
         if not hasattr(self, "additional_settings"):
             self.additional_settings = {}
-
-        self._layout = [
-            [sg.Menu(TOOLBAR_STRUCTURE)],
-            [sg.Text("BackSeatGamer Command Relay")],
-            [sg.Multiline(disabled=True, size=(None, 30), key="output", autoscroll=True)],
-            [
-                sg.Button("Clear"), sg.Button("Stop")
-            ]
-        ]
 
         self.startup()
 
@@ -60,7 +56,11 @@ class BaseMode(abc.ABC):
                 self._window["output"].update("")
 
             elif event == "Update Rewards":
+                self._window.close()
+
                 self.reload_rewards()
+                self.show_window()
+
                 self.alert_box("Rewards successfully updated")
 
             elif event == "Stop":
@@ -73,14 +73,20 @@ class BaseMode(abc.ABC):
                 self.teardown()
                 return
 
+            elif str(event).startswith("cmd_"):
+                self.receive_reward(self._commands[event[4:]], "ManualTrigger")
+
             elif event == "About":
                 self.alert_box(constants.ABOUT_TEXT)
 
     def receive_reward(self, command: str, guest_name: str):
         for reward in self.rewards:
-            print(reward)
-            if reward["command"] == command:
-                print(guest_name)
+            if reward["name"] == command:
+                self.write_to_console("{} redeemed command {}".format(guest_name, command))
+                sdk.send_command(
+                    self._config["server"], self._config["auth_code"], reward["id"], guest_name
+                )
+                break
 
     def write_to_console(self, message: str):
         self._window["output"].update(message + "\n", append=True)
@@ -108,6 +114,24 @@ class BaseMode(abc.ABC):
 
     def reload_rewards(self):
         self.rewards = sdk.get_rewards(self._config["server"], self._config["auth_code"])
+
+        self._commands = {i["command"]: i["name"] for i in self.rewards}
+
+        self._reward_buttons = [
+            [sg.Button(reward["name"], key="cmd_" + reward["command"])] for reward in self.rewards
+        ]
+
+        self._layout = [
+            [sg.Menu(TOOLBAR_STRUCTURE)],
+            [sg.Text("BackSeatGamer Command Relay")],
+            [
+                sg.Multiline(disabled=True, size=(None, 30), key="output", autoscroll=True),
+                sg.Frame("Manually Trigger A Reward", layout=self._reward_buttons)
+            ],
+            [
+                sg.Button("Clear"), sg.Button("Stop")
+            ]
+        ]
 
     @abc.abstractmethod
     def _relay_commands(self):

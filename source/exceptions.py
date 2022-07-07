@@ -1,10 +1,18 @@
-class ReverseProxyException(Exception):
+class CommandRelayException(Exception):
     pass
 
 
-class FailedToConnectException(ReverseProxyException):
+class FailedToConnectException(CommandRelayException):
     pass
 
 
-class ReturnToHomeException(ReverseProxyException):
+class ReturnToHomeException(CommandRelayException):
+    pass
+
+
+class RewardTooExpensiveException(CommandRelayException):
+    pass
+
+
+class RewardTooFastException(CommandRelayException):
     pass
