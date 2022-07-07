@@ -78,7 +78,10 @@ class BaseMode(abc.ABC):
                 return
 
             elif str(event).startswith("cmd_"):
-                self.receive_reward(self._commands[event[4:]], "ManualTrigger")
+                try:
+                    self.receive_reward(self._commands[event[4:]], "ManualTrigger")
+                except exceptions.RewardTooFastException as e:
+                    self.write_to_console("Command used to fast. {}".format(e))
 
             elif event == "About":
                 self.alert_box(constants.ABOUT_TEXT)
