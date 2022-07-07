@@ -83,6 +83,12 @@ class BaseMode(abc.ABC):
                 except exceptions.RewardTooFastException as e:
                     self.write_to_console("Command used to fast. {}".format(e))
 
+                except exceptions.RewardTooExpensiveException as e:
+                    self.write_to_console(
+                        "Command to expensive. {}. "
+                        "You can give ManualTrigger more points through the web interface".format(e)
+                    )
+
             elif event == "About":
                 self.alert_box(constants.ABOUT_TEXT)
 
