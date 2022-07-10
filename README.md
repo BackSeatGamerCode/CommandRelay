@@ -13,7 +13,7 @@ The `help` command returns a list of available rewards. It has the following ali
 - `commands`
 - `rewards`
 
-The `balance command returns the current balance of the player. It has the following alias:
+The `balance` command returns the current balance of the player. It has the following alias:
 - `balance`
 - `bal`
 - `ball`
@@ -58,7 +58,7 @@ The `!help` command returns a list of available rewards. It has the following al
 - `!commands`
 - `!rewards`
 
-The `!balance command returns the current balance of the player. It has the following alias:
+The `!balance` command returns the current balance of the player. It has the following alias:
 - `!balance`
 - `!bal`
 - `!ball`
