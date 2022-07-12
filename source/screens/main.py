@@ -9,7 +9,8 @@ import source.screens.modes as mode_screens
 sg.change_look_and_feel('Dark2')
 
 MODES = {
-    "Twitch IRC": mode_screens.TwitchIRCMode
+    "Twitch IRC": mode_screens.TwitchIRCMode,
+    "Discord Bot": mode_screens.DiscordBot
 }
 
 CHECKED_FOR_UPDATES = False

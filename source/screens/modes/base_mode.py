@@ -151,6 +151,22 @@ class BaseMode(abc.ABC):
             ]
         ]
 
+    def process_command(self, command: str, username: str) -> typing.Union[str, None]:
+        if command in ("help", "h", "commands", "rewards"):
+            return ", ".join("!{}".format(c["name"]) for c in self.rewards)
+
+        if command in ("balance", "bal", "ball", "points"):
+            return "{} has {} points".format(username, self.get_user_info(username)["points"])
+
+        try:
+            self.receive_reward(command, username)
+
+        except exceptions.RewardTooFastException as e:
+            return "{}, {}".format(username, e)
+
+        except exceptions.RewardTooExpensiveException as e:
+            return "{}, {}".format(username, e)
+
     @abc.abstractmethod
     def _relay_commands(self):
         pass
